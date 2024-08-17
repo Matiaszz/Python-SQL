@@ -24,8 +24,9 @@ print()
 
 cursor.execute(
     f'SELECT * FROM {CUSTOMERS} '
-    'WHERE id= "3" '
+    'WHERE id= "4" '
 )
+
 row = cursor.fetchone()
 _id, name, weight = row
 print(row)

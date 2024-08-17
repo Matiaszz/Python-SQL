@@ -1,6 +1,9 @@
 import sqlite3
 from pathlib import Path
 
+# CRUD - CREATE  READ    UPDATE  DELETE
+# SQL -  INSERT  SELECT  UPDATE  DELETE
+
 ROOT = Path(__file__).parent
 NAME_SQL = 'db.sqlite3'
 DATA_FOLDER = ROOT / 'data'
@@ -17,6 +20,7 @@ cursor.execute(
 )
 connection.commit()
 
+# RECOMENDAVEL: DELETE COM WHERE
 cursor.execute(
     f'DELETE FROM sqlite_sequence WHERE name= "{CUSTOMERS}" '
 )
@@ -44,6 +48,8 @@ sql = (
     '(:name, :weight)'  # valores que VÃO ser passados pelo usuario
 )
 
+# connection.executemany('', '')  # executa MAIS DE UM comando SQL
+
 # valores PASSADOS pelo usuario
 cursor.executemany(
     sql,
@@ -55,11 +61,25 @@ cursor.executemany(
         {'name': 'Otávio', 'weight': 12},
     ]
 )
+
 connection.commit()
 
-# connection.executemany('', '')  # executa MAIS DE UM comando SQL
-cursor.close()
-connection.close()
 
 if __name__ == '__main__':
     print(sql)
+    # DELETE COM WHERE
+    cursor.execute(
+        f'DELETE FROM {CUSTOMERS} '
+        'WHERE id= "3" '
+    )
+    connection.commit()
+
+    cursor.execute(
+        f'UPDATE {CUSTOMERS} '
+        'SET name="valor" '
+        'WHERE id= 4 '
+    )
+    connection.commit()
+
+    cursor.close()
+    connection.close()
