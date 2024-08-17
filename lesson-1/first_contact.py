@@ -44,7 +44,10 @@ sql = (
     '(?, ?)'  # valores que VÃO ser passados pelo usuario
 )
 print(sql)
-connection.execute(sql, ['Joana', 40.2])  # valores PASSADOS pelo usuario
+# valores PASSADOS pelo usuario
+connection.executemany(
+    sql, [['Joana', 40.2], ['Allan', 2]]
+)
 connection.commit()
 
 # connection.executemany('', '')  # executa MAIS DE UM comando SQL
