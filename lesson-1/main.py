@@ -41,12 +41,19 @@ connection.commit()
 sql = (
     f'INSERT INTO {CUSTOMERS} (name, weight) '
     'VALUES '
-    '(?, ?)'  # valores que VÃO ser passados pelo usuario
+    '(:name, :weight)'  # valores que VÃO ser passados pelo usuario
 )
 print(sql)
 # valores PASSADOS pelo usuario
-connection.executemany(
-    sql, [['Joana', 40.2], ['Allan', 2]]
+cursor.executemany(
+    sql,
+    [
+        {'name': 'Allan', 'weight': 23},
+        {'name': 'Maria', 'weight': 64},
+        {'name': 'Davi', 'weight': 22},
+        {'name': 'Mateus', 'weight': 13},
+        {'name': 'Otávio', 'weight': 12},
+    ]
 )
 connection.commit()
 
