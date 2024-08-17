@@ -10,8 +10,22 @@ CUSTOMERS = 'customers'
 connection = sqlite3.connect(DB_FILE)
 cursor = connection.cursor()
 
+
+# CUIDADO: DELETE SEM WHERE
 cursor.execute(
-    f'CREATE TABLE IF NOT EXISTS {CUSTOMERS}'  # (just translate)
+    f'DELETE FROM {CUSTOMERS}'
+)
+connection.commit()
+
+cursor.execute(
+    f'DELETE FROM sqlite_sequence WHERE name= "{CUSTOMERS}" '
+)
+# Cria a tabela
+cursor.execute(
+    # Primary key = chave que a gente vai usar para buscar valores na tabela
+
+
+    f'CREATE TABLE IF NOT EXISTS {CUSTOMERS}'  # (Só traduzir)
     '('
     'id INTEGER PRIMARY KEY AUTOINCREMENT,'  # INT
     'name TEXT,'  # STR
@@ -20,5 +34,19 @@ cursor.execute(
 )
 connection.commit()
 
+# Registrar valores na tabela
+
+# executa UM comando SQL
+
+sql = (
+    f'INSERT INTO {CUSTOMERS} (name, weight) '
+    'VALUES '
+    '(?, ?)'  # valores que VÃO ser passados pelo usuario
+)
+print(sql)
+connection.execute(sql, ['Joana', 40.2])  # valores PASSADOS pelo usuario
+connection.commit()
+
+# connection.executemany('', '')  # executa MAIS DE UM comando SQL
 cursor.close()
 connection.close()
