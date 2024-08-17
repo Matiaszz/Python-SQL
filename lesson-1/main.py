@@ -43,7 +43,7 @@ sql = (
     'VALUES '
     '(:name, :weight)'  # valores que VÃO ser passados pelo usuario
 )
-print(sql)
+
 # valores PASSADOS pelo usuario
 cursor.executemany(
     sql,
@@ -60,3 +60,6 @@ connection.commit()
 # connection.executemany('', '')  # executa MAIS DE UM comando SQL
 cursor.close()
 connection.close()
+
+if __name__ == '__main__':
+    print(sql)
