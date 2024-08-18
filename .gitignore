@@ -128,4 +128,5 @@ venv
 .env
 __pycache__
 build
+mysql_aulas
 >>>>>>> c53bc844f203e70eb7c06c81409c405d1a0cd83e
