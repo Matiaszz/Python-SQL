@@ -1,4 +1,5 @@
 import pymysql
+import pymysql.cursors
 import dotenv
 import os
 
@@ -15,6 +16,7 @@ connection = pymysql.connect(
     user=env('MYSQL_USER'),
     password=env('MYSQL_PASSWORD'),
     database=env('MYSQL_DATABASE'),
+    cursorclass=pymysql.cursors.DictCursor
 )
 
 with connection:
@@ -152,3 +154,14 @@ with connection:
 
         print('NUMERO DE LINHAS AFETADAS:', rowsAffecteds)
     connection.commit()
+
+    # SELECT COM OUTRO CURSOR
+    with connection.cursor() as cursor:
+        sql = sql = (
+            f'SELECT * FROM {TABLE_NAME}'
+        )
+        cursor.execute(sql)
+
+        # row é um dicionario comum (id, name, age)
+        for row in cursor.fetchall():
+            print(row)
