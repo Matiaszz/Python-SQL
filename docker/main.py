@@ -90,3 +90,65 @@ with connection:
 
         print(f'NUMERO DE LINHAS AFETADAS: {affectedLines}')
     connection.commit()
+
+    # SELECT NO MYSQL
+    with connection.cursor() as cursor:
+        # sql = (
+        #     f'SELECT * FROM {TABLE_NAME} '
+        # )
+
+        # Pode ter =, >,>= e assim vai no sql
+
+        # idMin = int(input('Digite o menor id: '))
+        # idMax = int(input('Digite o maior id: '))
+        idMin = 2
+        idMax = 4
+
+        # RANGE NO SQL PREVININDO SQL INJECTION
+        sql = (
+            f'SELECT * FROM {TABLE_NAME} WHERE id BETWEEN %s AND %s '
+        )
+        cursor.execute(sql, (idMin, idMax))
+
+        # fetchall - Pega todos os valores
+        # fetchone - pega UM valor
+        data = cursor.fetchall()
+
+        # for row in data:
+        #     print(f'{row}')
+
+    # UPDATE
+    with connection.cursor() as cursor:
+        sql = (
+            f'UPDATE {TABLE_NAME} SET name = %s, age = %s WHERE id = %s  '
+        )
+        rowsAffecteds = cursor.execute(sql, ('Afeganistão', 26, 4))
+        connection.commit()
+
+        sql = (
+            f'SELECT * FROM {TABLE_NAME} '
+        )
+        data = cursor.fetchall()
+
+        for row in data:
+            print(f'{row}')
+
+        print('NUMERO DE LINHAS AFETADAS:', rowsAffecteds)
+
+        # DELETE
+    with connection.cursor() as cursor:
+        sql = (
+            f'DELETE FROM {TABLE_NAME} WHERE id = 8 '
+        )
+        rowsAffecteds = cursor.execute(sql)
+
+        sql = (
+            f'SELECT * FROM {TABLE_NAME} '
+        )
+        data = cursor.fetchall()
+
+        for row in data:
+            print(f'{row}')
+
+        print('NUMERO DE LINHAS AFETADAS:', rowsAffecteds)
+    connection.commit()
