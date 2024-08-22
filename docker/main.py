@@ -16,8 +16,7 @@ connection = pymysql.connect(
     user=env('MYSQL_USER'),
     password=env('MYSQL_PASSWORD'),
     database=env('MYSQL_DATABASE'),
-    # cursorclass=pymysql.cursors.DictCursor
-    cursorclass=pymysql.cursors.SSDictCursor
+    cursorclass=pymysql.cursors.DictCursor
 )
 
 with connection:
@@ -161,20 +160,21 @@ with connection:
         sql = sql = (
             f'SELECT * FROM {TABLE_NAME}'
         )
-        cursor.execute(sql)
+        lineafected = cursor.execute(sql)
 
         # row é um dicionario comum (id, name, age)
         # SSDictCursor = usado para um DB muito grande, junto com o unbuffered
-        print('FOR 1: ')
-        for row in cursor.fetchall_unbuffered():
+        for row in cursor.fetchall():
             print(row)
-            if row['id'] == 5:
-                break
 
-        print()
-        print('FOR 2: ')
-        # cursor.scroll(-2)  # vai "scrolar" a qtd de linha pra cima (-> id 6)
-        # cursor.scroll(1)  # (-> id 7)
-        # cursor.scroll(0, 'absolute')  # começa desde o inicio
-        for row in cursor.fetchall_unbuffered():
-            print(row)
+        cursor.execute(
+            # Pega o ultimo id
+            f'SELECT id FROM {TABLE_NAME} ORDER BY id DESC LIMIT 1 ')
+        lastid = cursor.fetchone()
+        print('Variavel', lineafected)
+        print('rowcount', cursor.rowcount)
+        print('lastrowid', cursor.lastrowid)
+
+        print('lastrowid na mão', lastid['id'])  # type: ignore
+
+    connection.commit()
