@@ -16,7 +16,8 @@ connection = pymysql.connect(
     user=env('MYSQL_USER'),
     password=env('MYSQL_PASSWORD'),
     database=env('MYSQL_DATABASE'),
-    cursorclass=pymysql.cursors.DictCursor
+    # cursorclass=pymysql.cursors.DictCursor
+    cursorclass=pymysql.cursors.SSDictCursor
 )
 
 with connection:
@@ -163,5 +164,17 @@ with connection:
         cursor.execute(sql)
 
         # row é um dicionario comum (id, name, age)
-        for row in cursor.fetchall():
+        # SSDictCursor = usado para um DB muito grande, junto com o unbuffered
+        print('FOR 1: ')
+        for row in cursor.fetchall_unbuffered():
+            print(row)
+            if row['id'] == 5:
+                break
+
+        print()
+        print('FOR 2: ')
+        # cursor.scroll(-2)  # vai "scrolar" a qtd de linha pra cima (-> id 6)
+        # cursor.scroll(1)  # (-> id 7)
+        # cursor.scroll(0, 'absolute')  # começa desde o inicio
+        for row in cursor.fetchall_unbuffered():
             print(row)
